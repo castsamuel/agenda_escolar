@@ -171,12 +171,12 @@ function setGrade(subjectId, bimestre, field, value) {
   row[field] = value === '' || value === null || value === undefined ? null : Number(value);
   save();
   return row;
-}
-function computeAverage(row) {
+  
+function computeBimestreTotal(row) {
   if (!row) return null;
   const { av1, av2, av3 } = row;
   if (av1 == null || av2 == null || av3 == null) return null;
-  return (av1 * 3 + av2 * 5 + av3 * 2) / 10;
+  return av1 + av2 + av3;   // soma direta, sem peso, sem divisão
 }
 
 // ---------- Deveres ----------
