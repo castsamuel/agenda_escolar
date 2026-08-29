@@ -16,10 +16,11 @@ funcionando inteiramente no navegador, sem servidor/backend, pronta para o
   status, ordenação por prazo.
 - **Trabalhos**: mesma ideia dos deveres, com data de início, prazo e 4 status
   (Não iniciado / Em andamento / Concluído / Atrasado).
-- **Notas por bimestre**: AV1 (peso 3), AV2 (peso 5) e AV3 (peso 2), com média
-  calculada automaticamente: `(AV1×3 + AV2×5 + AV3×2) ÷ 10`. Clique numa nota
-  para editá-la direto na tabela. Veja o histórico de cada matéria nos 4
-  bimestres num gráfico.
+- **Notas por bimestre**: AV1 (até 3 pontos), AV2 (até 5 pontos) e AV3 (até
+  2 pontos). O total do bimestre é a **soma direta** dos pontos obtidos —
+  `AV1 + AV2 + AV3`, até 10 pontos — e **não** uma média ponderada. Clique
+  numa nota para editá-la direto na tabela. Veja o histórico de cada matéria
+  nos 4 bimestres num gráfico.
 - **Nota mínima configurável**, usada para calcular a situação acadêmica
   (🟢 Aprovado / 🟡 Recuperação / 🔴 Reprovado).
 - **Desempenho**: comparação entre os 4 bimestres, evolução da média geral,
@@ -74,17 +75,37 @@ agenda-escolar/
 
 ## Como executar localmente
 
-Como o projeto usa ES Modules, é preciso servir os arquivos por HTTP (abrir o
-`index.html` direto com `file://` não funciona nos navegadores modernos).
+Basta abrir o arquivo `index.html` duas vezes (clique duplo) — ele carrega
+`src/js/app.bundle.js`, um script único e comum (não é um ES Module), então
+funciona direto pelo `file://`, sem precisar de servidor.
 
-Opção mais simples (precisa de [Node.js](https://nodejs.org) instalado):
+Se preferir servir por HTTP mesmo assim (opcional, precisa de
+[Node.js](https://nodejs.org)):
 
 ```bash
 npm start
 ```
 
-Isso abre o site em `http://localhost:5173`. Qualquer outro servidor estático
-funciona também (por exemplo, a extensão "Live Server" do VS Code).
+Isso abre o site em `http://localhost:5173`.
+
+### Sobre o `app.bundle.js`
+
+Os arquivos em `src/js/*.js` e `src/js/pages/*.js` e `src/js/components/*.js`
+são a versão "fonte", organizada em módulos, para facilitar leitura e
+manutenção. O `index.html` carrega, na prática, o `src/js/app.bundle.js`,
+que reúne todo esse código num único arquivo sem `import`/`export`. Isso
+evita o problema de módulos ES bloqueados por CORS quando o site é aberto
+direto do disco (`file://`) e também remove qualquer risco de arquivo
+"faltando" ao publicar — é um só arquivo de JavaScript. Se você editar os
+arquivos-fonte, peça para eu regenerar o `app.bundle.js` a partir deles.
+
+## Se o site abrir em branco
+
+- Confira no console do navegador (F12 → Console) se aparece algum erro.
+- Confirme que a pasta `src/` inteira foi enviada junto — o `index.html`
+  sozinho não funciona.
+- Se você editou algo e quebrou o `app.bundle.js`, restaure a partir dos
+  arquivos-fonte em `src/js/`.
 
 ## Como publicar no GitHub Pages
 
